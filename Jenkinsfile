@@ -1,4 +1,5 @@
 pipeline {
+    agent any
     environment {
         DOCKER_DEV_REPO = 'HARSAWASTHI/dev'
         DOCKER_PROD_REPO = 'HARSAWASTHI/prod'

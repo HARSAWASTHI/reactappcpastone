@@ -1,13 +1,13 @@
 pipeline {
     environment {
-        DOCKER_DEV_REPO = 'sumitdhal/dev-repo'
-        DOCKER_PROD_REPO = 'sumitdhal/prod-repo'
+        DOCKER_DEV_REPO = 'HARSAWASTHI/dev'
+        DOCKER_PROD_REPO = 'HARSAWASTHI/prod'
     }
 
     stages {
         stage('Checkout') {
             steps {
-                git branch: env.BRANCH_NAME, url: 'https://github.com/your-repo.git'
+                git branch: env.BRANCH_NAME, url: 'https://github.com/HARSAWASTHI/reactappcpastone.git'
             }
         }
 

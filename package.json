@@ -1,0 +1,11 @@
+{
+  "name": "devops-build",
+  "version": "1.0.0",
+  "main": "main.f1c48542.js",
+  "scripts": {
+    "start": "node main.f1c48542.js"
+  },
+  "author": "harsh awasthi",
+  "license": "ISC",
+  "description": ""
+}

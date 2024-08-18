@@ -1,0 +1,10 @@
+version: '3.7'
+services:
+  webcontainer:
+    image: nginx
+  ports:
+      -80:80
+  volumes:
+      - G:\DEVOPS\CAPSTONE\devops-build\build:/usr/share/nginx/html
+volumes:
+  G:\DEVOPS\CAPSTONE\devops-build\build

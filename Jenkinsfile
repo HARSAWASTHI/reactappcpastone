@@ -1,12 +1,6 @@
 pipeline {
     agent any
 
-    environment{
-        Docker_dev_Repo = harsawasthi/dev
-        Docker_prod_Repo = harsawasthi/prod
-
-    }
-
     stages {
         stage(docker login) {
             steps {
@@ -19,9 +13,10 @@ pipeline {
                 branch '*/master'
             }
             steps {
-                // Build the Docker image
-                sh "docker build -t ${Docker_prod_Repo} ."
-                sh "docker push ${Docker_prod_Repo}:latest"
+                
+                sh 'docker build -t myapp .'
+                sh 'docker tag myapp $DOCKER_USERNAME/prod'
+                sh 'docker push $DOCKER_USERNAME/prod:latest'
             }
         }
 
@@ -31,8 +26,10 @@ pipeline {
             }
             steps {
               
-                sh "docker build -t ${Docker_dev_Repo} ."
-                sh "docker push ${Docker_dev_Repo}:latest"
+                sh 'docker build -t myapp .'
+                sh 'docker tag myapp $DOCKER_USERNAME/dev'
+                sh 'docker push $DOCKER_USERNAME/dev:latest'
+
             }
         }
     }

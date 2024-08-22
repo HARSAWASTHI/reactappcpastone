@@ -4,11 +4,16 @@ pipeline {
     stages {
             stage('docker login') {
                 steps {
-                     withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) 
+                    script { 
+                        withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) 
                      {
+                     
                      sh "echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin"
                 }
             }
+                     
+        }
+    }
 
             stage('for master Branch') {
                 when {
@@ -30,7 +35,6 @@ pipeline {
                     sh 'docker build -t harsawasthi/dev:latest .'
                     sh 'docker push harsawasthi/dev:latest'
 
-                }
             }
         }
     }

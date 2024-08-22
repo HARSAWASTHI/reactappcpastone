@@ -1,23 +1,35 @@
 pipeline {
     agent any
 
-    environment{
-        Docker_dev_Repo = harsawasthi/dev
-    }
-
     stages {
-        stage('Build') {
+        stage(docker login) {
             steps {
-                // Build the Docker image
-                sh "docker build -t ${Docker_dev_Repo} ."
+                      withCredentials([usernamePassword(credentialsId: "${DOCKER_REGISTRY_CREDS}", passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
             }
         }
 
-        stage('Deploy') {
+        stage('for master Branch') {
+            when {
+                branch '*/master'
+            }
+            steps {
+                
+                sh 'docker build -t myapp .'
+                sh 'docker tag myapp $DOCKER_USERNAME/prod'
+                sh 'docker push $DOCKER_USERNAME/prod:latest'
+            }
+        }
+
+        stage('for dev Branch') {
+            when {
+                branch '*/dev'
+            }
             steps {
               
-                // Deploy the Docker image using the deploy script
-                sh "docker push ${Docker_dev_Repo}"
+                sh 'docker build -t myapp .'
+                sh 'docker tag myapp $DOCKER_USERNAME/dev'
+                sh 'docker push $DOCKER_USERNAME/dev:latest'
+
             }
         }
     }

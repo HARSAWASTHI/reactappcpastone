@@ -1,54 +1,24 @@
 pipeline {
-    environment {
-        DOCKER_DEV_REPO = 'sumitdhal/dev-repo'
-        DOCKER_PROD_REPO = 'sumitdhal/prod-repo'
+    agent any
+
+    environment{
+        Docker_dev_Repo = harsawasthi/dev
     }
 
     stages {
-        stage('Checkout') {
+        stage('Build') {
             steps {
-                git branch: env.BRANCH_NAME, url: 'https://github.com/your-repo.git'
+                // Build the Docker image
+                sh "docker build -t ${Docker_dev_Repo} ."
             }
         }
 
-        stage('Build Docker Image') {
+        stage('Deploy') {
             steps {
-                script {
-                    def imageName = ''
-                    if (env.BRANCH_NAME == 'dev') {
-                        imageName = "${DOCKER_DEV_REPO}:${env.BUILD_NUMBER}"
-                    } else if (env.BRANCH_NAME == 'master') {
-                        imageName = "${DOCKER_PROD_REPO}:${env.BUILD_NUMBER}"
-                    }
-                    sh "docker build -t ${imageName} ."
-                }
+              
+                // Deploy the Docker image using the deploy script
+                sh "docker push ${Docker_dev_Repo}"
             }
-        }
-
-        stage('Push Docker Image') {
-            steps {
-                script {
-                    def imageName = ''
-                    if (env.BRANCH_NAME == 'dev') {
-                        imageName = "${DOCKER_DEV_REPO}:${env.BUILD_NUMBER}"
-                    } else if (env.BRANCH_NAME == 'master') {
-                        imageName = "${DOCKER_PROD_REPO}:${env.BUILD_NUMBER}"
-                    }
-                    withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
-                        sh "echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin"
-                        sh "docker push ${imageName}"
-                    }
-                }
-            }
-        }
-    }
-
-    post {
-        success {
-            echo 'Build, Push, and Deploy completed successfully!'
-        }
-        failure {
-            echo 'Build failed!'
         }
     }
 }

@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('docker login') {
             steps {
-                      sh 'docker login -u $DOCKER_USER -p $DOCKER_PASS'
+                     sh 'docker login -u $DOCKER_USER -p $DOCKER_PASS'
             }
         }
 
@@ -14,9 +14,8 @@ pipeline {
             }
             steps {
                 
-                sh 'docker build -t myapp .'
-                sh 'docker tag myapp $DOCKER_USERNAME/prod'
-                sh 'docker push $DOCKER_USERNAME/prod:latest'
+                sh 'docker build -t harsawasthi/prod:latest .'
+                sh 'docker push harsawasthi/prod:latest'
             }
         }
 
@@ -26,9 +25,8 @@ pipeline {
             }
             steps {
               
-                sh 'docker build -t myapp .'
-                sh 'docker tag myapp $DOCKER_USERNAME/dev'
-                sh 'docker push $DOCKER_USERNAME/dev:latest'
+                sh 'docker build -t harsawasthi/dev:latest .'
+                sh 'docker push harsawasthi/dev:latest'
 
             }
         }

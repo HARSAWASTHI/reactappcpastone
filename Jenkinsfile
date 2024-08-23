@@ -5,36 +5,38 @@ pipeline {
             stage('docker login') {
                 steps {
                     script { 
-                        withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) 
-                     {
-                     
-                     sh "echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin"
+                        withDockerRegistry(credentialsId: 'dockerhub', toolName: 'Docker', url: 'https://hub.docker.com/') {
+    
                 }
             }
                      
         }
     }
-
-            stage('for master Branch') {
-                when {
-                    branch '*/master'
-                }
-                steps {
-                
-                    sh 'docker build -t harsawasthi/prod:latest .'
-                    sh 'docker push harsawasthi/prod:latest'
-                }
-            }
-
             stage('for dev Branch') {
                 when {
                     branch '*/dev'
                 }
                 steps {
-              
-                    sh 'docker build -t harsawasthi/dev:latest .'
-                    sh 'docker push harsawasthi/dev:latest'
+                    script {
+                        sh 'docker build -t harsawasthi/dev:latest .'
+                        sh 'docker push harsawasthi/dev:latest'
 
+
+                    }
+              
+                }
+            }
+            stage('for master Branch') {
+                when {
+                    branch '*/master'
+                }
+                steps {
+                    script {
+                        sh 'docker build -t harsawasthi/prod:latest .'
+                        sh 'docker push harsawasthi/prod:latest'
+
+                    }
+                                   
             }
         }
     }

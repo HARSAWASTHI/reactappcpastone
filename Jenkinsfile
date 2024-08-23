@@ -8,7 +8,7 @@ pipeline {
                 }
                 steps {
                     script {
-                        withDockerRegistry(credentialsId: 'dockerhub', url: 'https://registry.hub.docker.com/') {
+                        withDockerRegistry(credentialsId: "dockerhub", url: "https://registry.hub.docker.com/") {
    }
                         sh "docker build -t harsawasthi/dev:${env.BUILD_ID} ."
                         sh "docker push harsawasthi/dev:${env.BUILD_ID}"
@@ -24,7 +24,7 @@ pipeline {
                 }
                 steps {
                     script {
-                        withDockerRegistry(credentialsId: 'dockerhub', url: 'https://registry.hub.docker.com/') {
+                        withDockerRegistry(credentialsId: "dockerhub", url: "https://registry.hub.docker.com/") {
 }
                         sh "docker build -t harsawasthi/prod:${env.BUILD_ID} ."
                         sh "docker push harsawasthi/prod:${env.BUILD_ID}"

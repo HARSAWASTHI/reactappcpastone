@@ -10,7 +10,8 @@ pipeline {
                     script {
 
                         sh "docker build -t harsawasthi/dev:${env.BUILD_ID} ."
-                         withDockerRegistry(credentialsId: "dockerhub", url: "https://registry.hub.docker.com/") {
+                        withCredentials([usernamePassword(credentialsId: "dockerhub", passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
+                             sh "echo \$DOCKER_PASSWORD | docker login -u \$DOCKER_USERNAME --password-stdin docker.io"
                              sh "docker push harsawasthi/dev:${env.BUILD_ID}"
    }
                         
@@ -28,7 +29,8 @@ pipeline {
                     script {
                        
                         sh "docker build -t harsawasthi/prod:${env.BUILD_ID} ."
-                         withDockerRegistry(credentialsId: "dockerhub", url: "https://registry.hub.docker.com/") {
+                         withCredentials([usernamePassword(credentialsId: "dockerhub", passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
+                             sh "echo \$DOCKER_PASSWORD | docker login -u \$DOCKER_USERNAME --password-stdin docker.io"
                              sh "docker push harsawasthi/prod:${env.BUILD_ID}"
 }
                         

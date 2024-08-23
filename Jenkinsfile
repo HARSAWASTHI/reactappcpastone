@@ -4,7 +4,7 @@ pipeline {
     stages {
           stage('for dev Branch') {
                 when {
-                    branch '*/dev'
+                    branch 'origin/dev'
                 }
                 steps {
                     script {
@@ -21,7 +21,7 @@ pipeline {
             }
             stage('for master Branch') {
                 when {
-                    branch '*/master'
+                    branch 'origin/master'
                 }
                 steps {
                     script {
